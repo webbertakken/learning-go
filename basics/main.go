@@ -17,10 +17,11 @@ but has the name base64, not encoding_base64 and not encodingBase64.
 func main() {
 	helloWorld()
 	types()
+	math()
 	inference()
 	formatting()
 	arrays()
-	math()
+	loops()
 	packages()
 	normalSyntaxInGo()
 
