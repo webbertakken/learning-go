@@ -19,6 +19,7 @@ func main() {
 	types()
 	inference()
 	formatting()
-	normalSyntaxInGo()
+	arrays()
 	math()
+	normalSyntaxInGo()
 }

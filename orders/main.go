@@ -1,35 +1,32 @@
 package main
 
-import "fmt"
-
-/*
-An Array has a fixed length. It has to be specified during initialisation.
-
-Slices are more like javascript-arrays and do not specify length.
-Adding items to a Slice will create a new slice from scratch
-*/
+import (
+	"fmt"
+	"sort"
+	"strings"
+)
 
 func main() {
-	// Arrays
-	ages := [3]int{20, 25, 30}
-	names := [4]string{"Yoshi", "Mario", "Luigi", "Peach"}
-	names[1] = "Bowser"
+	// "strings" package
+	greeting := "Hello there friends!"
 
-	fmt.Println(ages, len(ages))
-	fmt.Println(names, len(names))
+	fmt.Println(strings.Contains(greeting, "Hello"))
+	fmt.Println(strings.ReplaceAll(greeting, "friends", "peeps"))
 
-	// Slices (use arrays under the hood)
-	var scores = []int{100, 50, 60}
-	scores[2] = 25
-	scores = append(scores, 85)
-	fmt.Println(scores, len(scores))
+	fmt.Printf("Original value of greeting is still %q\n", greeting)
+	fmt.Println("index of \"ll\" is", strings.Index(greeting, "ll")) // 2
+	fmt.Println(strings.Split(greeting, " "))                        // slice of 3 elements
 
-	// Slice ranges
-	rangeOne := names[1:3]  // (not inclusive), so index 1 and 2
-	rangeTwo := names[2:]   // from index to end
-	rangeThree := names[:3] // from index to end
-	fmt.Println(rangeOne, rangeTwo, rangeThree)
+	// "sort" package
+	ages := []int{45, 20, 35, 30, 75, 60, 50, 25}
+	sort.Ints(ages) // modifies the original slice
+	fmt.Println("(sorted)", ages)
 
-	rangeOne = append(rangeOne, "Koopa")
-	fmt.Println(rangeOne)
+	index := sort.SearchInts(ages, 30)
+	fmt.Println("index of age 30 (after sorting) is", index)
+
+	names := []string{"Yoshi", "Mario", "Peach", "Bowser", "Luigi"}
+	sort.Strings(names) // modifies the original slice again
+	fmt.Println(names)
+	fmt.Println("Index of \"Bowser\" is", sort.SearchStrings(names, "Bowser"))
 }
