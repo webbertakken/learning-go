@@ -15,14 +15,14 @@ but has the name base64, not encoding_base64 and not encodingBase64.
 */
 
 func main() {
-	//helloWorld()
-	//types()
-	//mathematics()
-	//inference()
-	//formatting()
-	//arrays()
-	//loops()
-	//packages()
+	helloWorld()
+	types()
+	mathematics()
+	inference()
+	formatting()
+	collections()
+	loops()
+	packages()
 	functions()
-	//normalSyntaxInGo()
+	normalSyntaxInGo()
 }

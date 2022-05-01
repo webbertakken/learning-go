@@ -9,7 +9,7 @@ Slices are more like javascript-arrays and do not specify length.
 Adding items to a Slice will create a new slice from scratch
 */
 
-func arrays() {
+func collections() {
 	// Arrays
 	ages := [3]int{20, 25, 30}
 	names := [4]string{"Yoshi", "Mario", "Luigi", "Peach"}
@@ -32,4 +32,28 @@ func arrays() {
 
 	rangeOne = append(rangeOne, "Koopa")
 	fmt.Println(rangeOne)
+
+	// Maps
+	itemPrices := map[string]float64{
+		"soup":           4.19,
+		"pie":            7.99,
+		"salad":          6.99,
+		"toffee pudding": 3.55,
+	}
+
+	for item, price := range itemPrices {
+		fmt.Println(item, "-", price)
+	}
+
+	phonebook := map[int]string{
+		267584967: "Mario",
+		984759373: "Luigi",
+		845775485: "Peach",
+	}
+
+	fmt.Printf("The number %d belongs to %s.\n", 267584967, phonebook[267584967])
+
+	phonebook[984759373] = "Bowser"
+	fmt.Printf("The number %d now belongs to %s.\n", 984759373, phonebook[984759373])
+
 }
