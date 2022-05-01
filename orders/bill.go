@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"strings"
 )
 
@@ -51,4 +52,33 @@ func (bill *bill) updateTip(tip float64) {
 
 func (bill *bill) addItem(itemName string, price float64) {
 	bill.items[itemName] = price
+}
+
+func (bill *bill) save() {
+	data := []byte(bill.format())
+
+	const billsFolder = "bills"
+
+	_, readDirError := os.ReadDir(billsFolder)
+	if readDirError != nil {
+		createDirError := os.Mkdir(billsFolder, os.ModeDir)
+		if createDirError != nil {
+			panic(createDirError)
+		}
+	}
+
+	for i := 0; i <= 100; i++ {
+		fileName := fmt.Sprintf("%s/%s-%d.txt", billsFolder, strings.ToLower(bill.name), i)
+		existingFile, _ := os.ReadFile(fileName)
+
+		if existingFile == nil {
+			createFileError := os.WriteFile(fileName, data, 0644)
+			if createFileError != nil {
+				panic(createFileError)
+			}
+
+			break
+		}
+	}
+
 }
