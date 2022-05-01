@@ -10,6 +10,7 @@ func loops() {
 	forLoop()
 	forLoopIteratingASlice(names)
 	forOfRangeLoop(names)
+	usingContinueAndBreak(names)
 }
 
 func whileLoop() {
@@ -44,5 +45,21 @@ func forOfRangeLoop(names []string) {
 	// Not using index
 	for _, value := range names {
 		fmt.Printf("The value is still %s\n", value)
+	}
+}
+
+func usingContinueAndBreak(names []string) {
+	for index, value := range names {
+		if index == 1 {
+			fmt.Println("skipping at position", index)
+			continue
+		}
+
+		if index > 2 {
+			fmt.Println("breaking at index", index)
+			break
+		}
+
+		fmt.Printf("The value at position %d is %v\n", index, value)
 	}
 }
