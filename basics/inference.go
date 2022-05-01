@@ -8,7 +8,7 @@ func inference() {
 	// Using var
 	var favouriteSnack = "ice cream" // string
 
-	// Using := notation without var
+	// Using := notation without var, cannot be used outside functions
 	favouriteFlavour := "mango" // string
 
 	// Output

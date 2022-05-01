@@ -1,41 +1,37 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strconv"
+)
 
 func main() {
+	age := 33
+	name := "Webber"
 
-	var nameOne string = "Mario"
-	var nameTwo = "Luigi"
-	var nameThree string
+	// Print
+	fmt.Print("Hello, ")
+	fmt.Print("world!\n")
 
-	fmt.Println("Hello "+nameOne, nameTwo, nameThree)
+	// Println
+	fmt.Println("My age is", age, "and my name is", name)
 
-	nameOne = "Peach"
-	nameThree = "Toad"
+	// Printf (formatted strings) %_ = format specifier
 
-	fmt.Println("Hello "+nameOne, nameTwo, nameThree)
+	// Default format
+	fmt.Printf("my age is %v and my name is %v \n", age, name)
 
-	nameFour := "Yoshi" // shorthand, can not be used outside a function
+	// Quoted
+	fmt.Printf("my age is %q and my name is %q \n", strconv.Itoa(age), name)
 
-	fmt.Println("And", nameFour)
+	// Type
+	fmt.Printf("age is of type %T \n", age)
+	fmt.Printf("name is of type %T \n", name)
 
-	// ints
-	var ageOne int = 20
-	var ageTwo = 30
-	ageThree := 40
+	// Float
+	fmt.Printf("Floating point with five decimals %.5f \n", 1.25)
 
-	fmt.Println(ageOne, ageTwo, ageThree)
-
-	// bits & memory
-	var numOne int8 = 25
-	var numTwo int8 = -128
-	var numThree uint = 255
-
-	fmt.Println(numOne, numTwo, numThree)
-
-	var scoreOne float32 = 25.98
-	var scoreTwo float64 = 8238492394923497239547252.18
-	scoreThree := 1.5 // float 64
-
-	fmt.Println(scoreOne, scoreTwo, scoreThree)
+	// Save formatted string
+	var someStatement = fmt.Sprintf("My age is %v and my name is %v", age, name)
+	fmt.Println(someStatement)
 }
