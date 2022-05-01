@@ -17,6 +17,7 @@ Usage example
 
 ```shell
 go run ./basics
+go run ./orders
 ```
 
 ## License
