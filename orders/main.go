@@ -1,37 +1,35 @@
 package main
 
-import (
-	"fmt"
-	"strconv"
-)
+import "fmt"
+
+/*
+An Array has a fixed length. It has to be specified during initialisation.
+
+Slices are more like javascript-arrays and do not specify length.
+Adding items to a Slice will create a new slice from scratch
+*/
 
 func main() {
-	age := 33
-	name := "Webber"
+	// Arrays
+	ages := [3]int{20, 25, 30}
+	names := [4]string{"Yoshi", "Mario", "Luigi", "Peach"}
+	names[1] = "Bowser"
 
-	// Print
-	fmt.Print("Hello, ")
-	fmt.Print("world!\n")
+	fmt.Println(ages, len(ages))
+	fmt.Println(names, len(names))
 
-	// Println
-	fmt.Println("My age is", age, "and my name is", name)
+	// Slices (use arrays under the hood)
+	var scores = []int{100, 50, 60}
+	scores[2] = 25
+	scores = append(scores, 85)
+	fmt.Println(scores, len(scores))
 
-	// Printf (formatted strings) %_ = format specifier
+	// Slice ranges
+	rangeOne := names[1:3]  // (not inclusive), so index 1 and 2
+	rangeTwo := names[2:]   // from index to end
+	rangeThree := names[:3] // from index to end
+	fmt.Println(rangeOne, rangeTwo, rangeThree)
 
-	// Default format
-	fmt.Printf("my age is %v and my name is %v \n", age, name)
-
-	// Quoted
-	fmt.Printf("my age is %q and my name is %q \n", strconv.Itoa(age), name)
-
-	// Type
-	fmt.Printf("age is of type %T \n", age)
-	fmt.Printf("name is of type %T \n", name)
-
-	// Float
-	fmt.Printf("Floating point with five decimals %.5f \n", 1.25)
-
-	// Save formatted string
-	var someStatement = fmt.Sprintf("My age is %v and my name is %v", age, name)
-	fmt.Println(someStatement)
+	rangeOne = append(rangeOne, "Koopa")
+	fmt.Println(rangeOne)
 }

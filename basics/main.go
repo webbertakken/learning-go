@@ -18,6 +18,7 @@ func main() {
 	helloWorld()
 	types()
 	inference()
+	formatting()
 	normalSyntaxInGo()
 	math()
 }
