@@ -6,6 +6,9 @@ Personal notes.
 Go is a general purpose, compiled, statically typed, object-oriented
 (in its own way) language with built-in testing support.
 
+Go passes function arguments by value. exceptions are values inside
+slices, maps, functions and other objects (types holding pointers).
+
 package and file names should be good: short, concise, evocative.
 By convention, packages are given lower case, single-word names;
 there should be no need for underscores or mixedCaps.
@@ -24,5 +27,6 @@ func main() {
 	loops()
 	packages()
 	functions()
+	pointers()
 	normalSyntaxInGo()
 }
