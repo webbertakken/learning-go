@@ -1,32 +1,48 @@
 package main
 
-import (
-	"fmt"
-	"sort"
-	"strings"
-)
+import "fmt"
 
 func main() {
-	// "strings" package
-	greeting := "Hello there friends!"
+	// Loops
+	names := []string{"Mario", "Luigi", "Yoshi", "Peach"}
 
-	fmt.Println(strings.Contains(greeting, "Hello"))
-	fmt.Println(strings.ReplaceAll(greeting, "friends", "peeps"))
+	whileLoop()
+	forLoop()
+	forLoopIteratingASlice(names)
+	forOfRangeLoop(names)
+}
 
-	fmt.Printf("Original value of greeting is still %q\n", greeting)
-	fmt.Println("index of \"ll\" is", strings.Index(greeting, "ll")) // 2
-	fmt.Println(strings.Split(greeting, " "))                        // slice of 3 elements
+func whileLoop() {
+	x := 0
+	for x < 5 {
+		fmt.Println("The value of x is", x)
+		x += 1
+	}
+}
 
-	// "sort" package
-	ages := []int{45, 20, 35, 30, 75, 60, 50, 25}
-	sort.Ints(ages) // modifies the original slice
-	fmt.Println("(sorted)", ages)
+func forLoop() {
+	for i := 0; i < 5; i++ {
+		fmt.Println("The value of i is", i)
+	}
+}
 
-	index := sort.SearchInts(ages, 30)
-	fmt.Println("index of age 30 (after sorting) is", index)
+func forLoopIteratingASlice(names []string) {
+	for i := 0; i < len(names); i++ {
+		fmt.Printf("The value at index %d is %s\n", i, names[i])
+	}
+}
 
-	names := []string{"Yoshi", "Mario", "Peach", "Bowser", "Luigi"}
-	sort.Strings(names) // modifies the original slice again
-	fmt.Println(names)
-	fmt.Println("Index of \"Bowser\" is", sort.SearchStrings(names, "Bowser"))
+func forOfRangeLoop(names []string) {
+
+	for index, value := range names {
+		fmt.Printf("The value at index %d is %s\n", index, value)
+
+		// this only updates the local variable, not the original slice
+		value = "something else"
+	}
+
+	// Not using index
+	for _, value := range names {
+		fmt.Printf("The value is still %s\n", value)
+	}
 }

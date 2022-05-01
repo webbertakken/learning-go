@@ -21,5 +21,7 @@ func main() {
 	formatting()
 	arrays()
 	math()
+	packages()
 	normalSyntaxInGo()
+
 }
