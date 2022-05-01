@@ -15,7 +15,7 @@ type bill struct {
 func newBill(name string) bill {
 	return bill{
 		name:  name,
-		items: map[string]float64{"pie": 5.99, "cake": 3.99},
+		items: map[string]float64{},
 		tip:   0,
 	}
 }
@@ -23,6 +23,9 @@ func newBill(name string) bill {
 func (bill *bill) format() string {
 	total := 0.00
 	formattedBill := strings.Builder{}
+
+	// Heading
+	formattedBill.WriteString("Bill for " + bill.name + ".\n")
 
 	// Add items
 	for item, price := range bill.items {
