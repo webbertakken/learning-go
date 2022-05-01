@@ -14,5 +14,4 @@ func normalSyntaxInGo() {
 	var commentThatWasntAskedFor = "That's" + " a lot"
 	commentThatWasntAskedFor += "!"
 	fmt.Println(commentThatWasntAskedFor)
-
 }

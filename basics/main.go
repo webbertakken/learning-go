@@ -28,5 +28,6 @@ func main() {
 	packages()
 	functions()
 	pointers()
+	interfaces()
 	normalSyntaxInGo()
 }
