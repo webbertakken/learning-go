@@ -11,6 +11,8 @@ The basics folder contains examples of most of the language's basics.
 
 ### Prerequisites
 
+You will need Go installed on your machine.
+
 ### Build & Run
 
 Usage example
