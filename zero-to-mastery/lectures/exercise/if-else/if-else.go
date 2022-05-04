@@ -5,19 +5,13 @@
 //  needed to grant resource access using any combination of `if`, `else if`,
 //  and `else`.
 //
-//--Requirements:
-//* Use the accessGranted() and accessDenied() functions to display
-//  informational messages
-//* Access at any time: Admin, Manager
-//* Access weekends: Contractor
-//* Access weekdays: Member
-//* Access Mondays, Wednesdays, and Fridays: Guest
 
 package main
 
 import "fmt"
 
 // Days of the week
+//goland:noinspection GoUnusedConst
 const (
 	Monday    = 0
 	Tuesday   = 1
@@ -45,9 +39,32 @@ func accessDenied() {
 	fmt.Println("Denied")
 }
 
+//goland:noinspection GoBoolExpressions
 func main() {
 	// The day and role. Change these to check your work.
 	today, role := Tuesday, Guest
 
-	accessGranted()
+	if role == Admin || role == Manager {
+		//* Access at any time: Admin, Manager
+		accessGranted()
+		return
+	} else if role == Contractor {
+		//* Access weekends: Contractor
+		if today >= 5 {
+			accessGranted()
+			return
+		}
+	} else if role == Member {
+		//* Access weekdays: Member
+		if today <= 4 {
+			accessGranted()
+			return
+		}
+	} else if today == Monday || today == Wednesday || today == Friday {
+		//* Access Mondays, Wednesdays, and Fridays: Guest
+		accessGranted()
+		return
+	}
+
+	accessDenied()
 }
