@@ -45,26 +45,15 @@ func main() {
 	today, role := Tuesday, Guest
 
 	if role == Admin || role == Manager {
-		//* Access at any time: Admin, Manager
 		accessGranted()
-		return
-	} else if role == Contractor {
-		//* Access weekends: Contractor
-		if today >= 5 {
-			accessGranted()
-			return
-		}
-	} else if role == Member {
-		//* Access weekdays: Member
-		if today <= 4 {
-			accessGranted()
-			return
-		}
-	} else if today == Monday || today == Wednesday || today == Friday {
-		//* Access Mondays, Wednesdays, and Fridays: Guest
+	} else if role == Contractor && today >= 5 {
 		accessGranted()
-		return
+	} else if role == Member && today <= 4 {
+		accessGranted()
+	} else if role == Guest && (today == Monday || today == Wednesday || today == Friday) {
+		accessGranted()
+	} else {
+		accessDenied()
 	}
 
-	accessDenied()
 }
