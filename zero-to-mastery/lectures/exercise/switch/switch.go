@@ -11,7 +11,28 @@
 
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math/rand"
+	"time"
+)
 
 func main() {
+	rand.Seed(time.Now().UnixNano())
+
+	age := rand.Int31() % 107
+
+	fmt.Printf("At %d years old, you're ", age)
+	switch {
+	case age <= 0:
+		fmt.Println("a newborn")
+	case age <= 3:
+		fmt.Println("a toddler")
+	case age <= 12:
+		fmt.Println("a child")
+	case age <= 17:
+		fmt.Println("a teenager")
+	default:
+		fmt.Println("an adult")
+	}
 }
