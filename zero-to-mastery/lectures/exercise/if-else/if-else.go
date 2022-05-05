@@ -55,5 +55,4 @@ func main() {
 	} else {
 		accessDenied()
 	}
-
 }
