@@ -16,12 +16,40 @@ package main
 
 import "fmt"
 
+const (
+  Add Operator = iota
+  Subtract
+  Multiply
+  Divide
+)
+
+type Operator int
+
+func (op *Operator) calculate(a int, b int) int {
+  switch *op {
+  case Add:
+    return a + b
+  case Subtract:
+    return a - b
+  case Multiply:
+    return a * b
+  case Divide:
+    return a / b
+  }
+  panic("unhandled operator")
+}
+
 func main() {
-	fmt.Println(add.calculate(2, 2)) // = 4
 
-	fmt.Println(sub.calculate(10, 3)) // = 7
+  add := Operator(Add)
+  fmt.Println(add.calculate(2, 2)) // = 4
 
-	fmt.Println(mul.calculate(3, 3)) // = 9
+  sub := Operator(Subtract)
+  fmt.Println(sub.calculate(10, 3)) // = 7
 
-	fmt.Println(div.calculate(100, 2)) // = 50
+  mul := Operator(Multiply)
+  fmt.Println(mul.calculate(3, 3)) // = 9
+
+  div := Operator(Divide)
+  fmt.Println(div.calculate(100, 2)) // = 50
 }
