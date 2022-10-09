@@ -34,19 +34,21 @@ type LiftDirector interface {
 	PickLift() Lift
 }
 
-type Motorcycle struct {
+type Vehicle struct {
 	make  string
 	model string
+}
+
+type Motorcycle struct {
+	Vehicle
 }
 
 type Car struct {
-	make  string
-	model string
+	Vehicle
 }
 
 type Truck struct {
-	make  string
-	model string
+	Vehicle
 }
 
 func (m Motorcycle) String() string {
@@ -93,7 +95,7 @@ type Lifts struct {
 }
 
 func main() {
-	incomingVehicles := []LiftDirector{Car{"Mazda", "323"}, Motorcycle{"Kawasaki", "Ninja 400"}, Truck{"IVECO", "Daily 4x4"}}
+	incomingVehicles := []LiftDirector{Car{Vehicle{"Mazda", "323"}}, Motorcycle{Vehicle{"Kawasaki", "Ninja 400"}}, Truck{Vehicle{"IVECO", "Daily 4x4"}}}
 
 	for _, vehicle := range incomingVehicles {
 		MoveToLift(vehicle)
