@@ -27,13 +27,56 @@ package main
 
 import (
 	"bufio"
-	"fmt"
-	"io"
+	"log"
 	"os"
 	"strconv"
 	"time"
 )
 
+func sumFiles(files []string) {
+	totalSum := 0
+	sumFile := func(fileName string) {
+		fileSum := 0
+		// Note: you must run this from zero-to-mastery/lectures/exercise/goroutines for the file to be opened correctly.
+		file, err := os.Open(fileName)
+		if err != nil {
+			log.Printf("Error opening file: %v, %v", fileName, err)
+		} else {
+			log.Printf("%v: file opened.\n", file.Name())
+		}
+
+		defer func(file *os.File) {
+			err := file.Close()
+			if err != nil {
+				log.Printf("Error closing file:", err)
+			} else {
+				log.Printf("%v: file closed.\n", file.Name())
+			}
+		}(file)
+
+		scanner := bufio.NewScanner(file)
+		for scanner.Scan() == true {
+			if number, err := strconv.Atoi(scanner.Text()); err == nil {
+				fileSum += number
+			} else {
+				log.Printf("%v: Can't parse line: %v, %v\n", file.Name(), scanner.Text(), err)
+			}
+		}
+
+		log.Printf("%v: sum is %v\n", fileName, fileSum)
+		totalSum += fileSum
+	}
+
+	for _, fileName := range files {
+		go sumFile(fileName)
+	}
+
+	time.Sleep(100 * time.Millisecond)
+	log.Printf("Total: %v\n", totalSum)
+}
+
 func main() {
 	files := []string{"num1.txt", "num2.txt", "num3.txt", "num4.txt", "num5.txt"}
+
+	sumFiles(files)
 }
