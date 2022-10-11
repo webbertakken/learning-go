@@ -1,6 +1,94 @@
 package main
 
+import (
+  "bytes"
+  "encoding/base64"
+  "fmt"
+  "github.com/chai2010/webp"
+  "github.com/google/uuid"
+  "image"
+  _ "image/gif"
+  _ "image/jpeg"
+  _ "image/png"
+  "log"
+  "os"
+  "strings"
+)
+
+func base64ToRawImage(base64Image string) image.Image {
+  reader := base64.NewDecoder(base64.StdEncoding, strings.NewReader(base64Image))
+
+  img, _, err := image.Decode(reader)
+  if err != nil {
+    log.Fatalln(err)
+  }
+
+  return img
+}
+
+func imageToWebp(img image.Image) bytes.Buffer {
+  var buf bytes.Buffer
+
+  if err := webp.Encode(&buf, img, &webp.Options{Lossless: true}); err != nil {
+    log.Fatalln()
+  }
+
+  return buf
+}
+
+func saveImageToDisk(imgBuf bytes.Buffer) string {
+  fileName := fmt.Sprintf("%v.webp", uuid.New().String())
+
+  if err := os.WriteFile(fileName, imgBuf.Bytes(), 0644); err != nil {
+    log.Fatalf("Something went wrong while trying to write a file \"%v\" to disk.\n", fileName)
+  }
+
+  return fileName
+}
+
+func makeWork(base64Images ...string) <-chan string {
+  out := make(chan string)
+
+  go func() {
+    for _, encodingImg := range base64Images {
+      out <- encodingImg
+    }
+    close(out)
+  }()
+
+  return out
+}
+
+func pipeline[I any, O any](inputChannel <-chan I, processFn func(I) O) <-chan O {
+  out := make(chan O)
+
+  go func() {
+    for input := range inputChannel {
+      out <- processFn(input)
+    }
+    close(out)
+  }()
+
+  return out
+}
+
 func main() {
+  // Load data into the pipeline
+  base64Images := makeWork(img1, img2, img3)
+
+  // Decode the base64 image into image format
+  rawImages := pipeline(base64Images, base64ToRawImage)
+
+  // Encode as webp
+  webpImages := pipeline(rawImages, imageToWebp)
+
+  // Save images to disk
+  fileNames := pipeline(webpImages, saveImageToDisk)
+
+  // List files
+  for fileName := range fileNames {
+    fmt.Printf("Saved %v\n", fileName)
+  }
 }
 
 const img1 = `
