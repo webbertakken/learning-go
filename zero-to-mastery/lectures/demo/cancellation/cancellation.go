@@ -1,84 +1,96 @@
 package main
 
 import (
-	"bytes"
-	"encoding/base64"
-	"fmt"
-	"image"
-	_ "image/gif"
-	_ "image/jpeg"
-	_ "image/png"
-	"log"
-	"os"
-	"strings"
+  "bytes"
+  "encoding/base64"
+  "fmt"
+  "image"
+  _ "image/gif"
+  _ "image/jpeg"
+  _ "image/png"
+  "log"
+  "os"
+  "strings"
 
-	"github.com/chai2010/webp"
-	"github.com/google/uuid"
+  "github.com/chai2010/webp"
+  "github.com/google/uuid"
 )
 
 func makeWork(base64Images ...string) <-chan string {
-	// create output channel
-	out := make(chan string)
+  // create output channel
+  out := make(chan string)
 
-	// spawn goroutine so we don't need to wait
-	go func() {
-		for _, encodedImg := range base64Images {
-			out <- encodedImg
-		}
-		// use `close` to indicate that nothing
-		// else will be sent on the channel
-		close(out)
-	}()
+  // spawn goroutine so we don't need to wait
+  go func() {
+    for _, encodedImg := range base64Images {
+      out <- encodedImg
+    }
+    // use `close` to indicate that nothing
+    // else will be sent on the channel
+    close(out)
+  }()
 
-	// return the output channel, which will be populated
-	// with the images by the goroutine
-	return out
-}
-
-func pipeline[I any, O any](input <-chan I, process func(I) O) <-chan O {
-	out := make(chan O)
-	go func() {
-		for in := range input {
-			out <- process(in)
-		}
-		close(out)
-	}()
-	return out
+  // return the output channel, which will be populated
+  // with the images by the goroutine
+  return out
 }
 
 func base64ToRawImage(base64Img string) image.Image {
-	// we decode the encoded Base64 image to an image.Image
-	reader := base64.NewDecoder(base64.StdEncoding, strings.NewReader(base64Img))
-	// second return value is the type of image, we don't need it for this demo
-	img, _, err := image.Decode(reader)
-	if err != nil {
-		log.Fatal(err)
-	}
-	return img
+  // we decode the encoded Base64 image to an image.Image
+  reader := base64.NewDecoder(base64.StdEncoding, strings.NewReader(base64Img))
+  // second return value is the type of image, we don't need it for this demo
+  img, _, err := image.Decode(reader)
+  if err != nil {
+    log.Fatal(err)
+  }
+  return img
 }
 
 func encodeToWebp(img image.Image) bytes.Buffer {
-	var buf bytes.Buffer
-	if err := webp.Encode(&buf, img, &webp.Options{Lossless: true}); err != nil {
-		log.Fatal(err)
-	}
-	return buf
+  var buf bytes.Buffer
+  if err := webp.Encode(&buf, img, &webp.Options{Lossless: true}); err != nil {
+    log.Fatal(err)
+  }
+  return buf
 }
 
 func saveToDisk(imgBuf bytes.Buffer) string {
-	filename := fmt.Sprintf("%v.webp", uuid.New().String())
-	os.WriteFile(filename, imgBuf.Bytes(), 0644)
-	return filename
+  filename := fmt.Sprintf("%v.webp", uuid.New().String())
+  os.WriteFile(filename, imgBuf.Bytes(), 0644)
+  return filename
+}
+
+func pipeline[I any, O any](exitChannel <-chan struct{}, input <-chan I, process func(I) O) <-chan O {
+  out := make(chan O)
+  go func() {
+    defer close(out)
+    for in := range input {
+      select {
+      case out <- process(in):
+      case <-exitChannel:
+        log.Println("Exit signal received.")
+        return
+      }
+    }
+  }()
+  return out
 }
 
 func main() {
-	base64Images := makeWork(img1, img2, img3)
-	rawImages := pipeline(base64Images, base64ToRawImage)
-	webpImages := pipeline(rawImages, encodeToWebp)
-	filenames := pipeline(webpImages, saveToDisk)
-	for name := range filenames {
-		fmt.Println(name)
-	}
+  base64Images := makeWork(img1, img2, img3)
+
+  exitChannel := make(chan struct{})
+  var exitSignal struct{}
+
+  rawImages := pipeline(exitChannel, base64Images, base64ToRawImage)
+  webpImages := pipeline(exitChannel, rawImages, encodeToWebp)
+
+  exitChannel <- exitSignal
+
+  filenames := pipeline(exitChannel, webpImages, saveToDisk)
+  for name := range filenames {
+    fmt.Println(name)
+  }
 
 }
 
