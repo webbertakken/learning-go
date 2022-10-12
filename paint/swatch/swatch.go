@@ -5,7 +5,7 @@ import (
 	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/widget"
 	"image/color"
-	"takken.io/pixl/apptype"
+	"takken.io/paint/appTypes"
 )
 
 type Swatch struct {
@@ -16,22 +16,22 @@ type Swatch struct {
 	clickHandler func(s *Swatch) *Swatch
 }
 
-func (swatch *Swatch) CreateRenderer() fyne.WidgetRenderer {
-	square := canvas.NewRectangle(swatch.Color)
+func (s *Swatch) CreateRenderer() fyne.WidgetRenderer {
+	square := canvas.NewRectangle(s.Color)
 	objects := []fyne.CanvasObject{square}
-	return &SwatchRenderer{
+	return &Renderer{
 		square:  *square,
 		objects: objects,
-		parent:  swatch,
+		parent:  s,
 	}
 }
 
-func (swatch *Swatch) SetColor(c color.Color) {
-	swatch.Color = c
-	swatch.Refresh()
+func (s *Swatch) SetColor(c color.Color) {
+	s.Color = c
+	s.Refresh()
 }
 
-func NewSwatch(state *apptype.State, color color.Color, swatchIndex int, clickHandler func(s *Swatch) *Swatch) *Swatch {
+func NewSwatch(state *appTypes.AppState, color color.Color, swatchIndex int, clickHandler func(s *Swatch) *Swatch) *Swatch {
 	swatch := &Swatch{
 		Selected:     false,
 		Color:        color,

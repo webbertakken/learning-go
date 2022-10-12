@@ -4,10 +4,11 @@ import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
 	"image/color"
-	"takken.io/pixl/swatch"
+	"takken.io/paint/global"
+	"takken.io/paint/swatch"
 )
 
-func buildSwatches(app *AppInit) *fyne.Container {
+func buildSwatches(app *global.App) *fyne.Container {
 	canvasSwatches := make([]fyne.CanvasObject, 0, 64)
 	for i := 0; i < cap(app.Swatches); i++ {
 		initialColor := color.NRGBA{R: 255, G: 255, B: 255, A: 255}
