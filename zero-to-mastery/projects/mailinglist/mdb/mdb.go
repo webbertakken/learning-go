@@ -20,7 +20,7 @@ func TryCreate(db *sql.DB) {
         id INTEGER PRIMARY KEY,
         email_address TEXT UNIQUE ,
         confirmed_at_date INTEGER,
-        is_opted_out INTEGER,
+        is_opted_out INTEGER
     );
   `)
 
